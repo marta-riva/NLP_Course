@@ -1,6 +1,7 @@
 import json
 import os
 from bs4 import BeautifulSoup
+import lxml
 actualDir = os.path.dirname(os.path.abspath(__file__))
 actualDir = os.path.join(actualDir, "NLP_Course", "Datasets\\")
 os.chdir(actualDir)
@@ -14,23 +15,26 @@ for tweet in tweets:
     print(tweet["text"])
     break
 
-for filename in os.listdir(actualDir):
+nextDir = os.path.join(actualDir,"Articles\\")
+for filename in os.listdir(nextDir):
     if ".txt" in filename:
-        print(filename)
-        doc = open(actualDir + "/" +filename, "r")
+        doc = open(nextDir + filename, "r")
         doc = doc.read()
 
         # look at the original HTML
-        soup = str(doc).split("<!-- END WAYBACK TOOLBAR INSERT -->")[1]
+        soup = str(doc).split("<!-- END WAYBACK TOOLBAR INSERT -->")[0]
 
-        soup = BeautifulSoup(soup, "lxml")
+        soup = BeautifulSoup(soup, "html.parser")
 
-        text = ""
+        text = " "
 
         # simply take all the paragraphs
-        for para in soup.find_all('p'):
+        for para in soup.findAll("p"):
+            print(para)
             text += para.text
 
         print(text)
-        print(" ")
+
         break
+
+
