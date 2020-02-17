@@ -1,28 +1,26 @@
 import codecs # serve per aprire file txt
+import json
 import os
+from collections import Counter
 
-# printing, small for e cazzate varie
+# Qui imparo a impostare le working directory
 
-counter = 0
-for i in range(10):
-    counter = counter + 1
-    print(counter)
+actualDir = os.path.dirname(os.path.abspath(__file__))
 
-
-# creare liste, appendere roba
-shopping_bag = ["ice-cream","peanut butter","tomatoes","beer"]
-
-shopping_bag.append("pasta")
-
-shopping_bag.remove("tomatoes")
-print (shopping_bag)
-
-# dizionari
-shopping_bag = {'ice-cream':3, 'peanut butter':1, 'beer':6, 'pasta':2}
-print (shopping_bag["ice-cream"])
+projectDir = os.path.join(actualDir, "NLP_Course", "Datasets", "trump.json")
 
 
+# aprire i file con le directory dinamiche
+speech = codecs.open(projectDir,"r","utf-8")
 
-# importiamo e leggiamo i testi
+# legge i testi
+speech = speech.read()
 
-abspath = os.path.abspath(__file__)
+# tokenizza
+words = speech.split(" ")
+
+# prende le parole più usate
+words = [x.lower() for x in words]
+counting_words = Counter(words)
+
+print(counting_words.most_common(2))
